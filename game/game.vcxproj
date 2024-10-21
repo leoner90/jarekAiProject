@@ -148,6 +148,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>$(ProjectDir)\source\;$(ProjectDir)\headers\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,8 +177,9 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MyGame.cpp" />
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="source\Map\Map.cpp" />
+    <ClCompile Include="source\MyGame.cpp" />
+    <ClCompile Include="source\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -190,8 +192,9 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MyGame.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="headers\Map\Map.h" />
+    <ClInclude Include="headers\MyGame.h" />
+    <ClInclude Include="source\stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
