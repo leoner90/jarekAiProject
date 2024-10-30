@@ -1,4 +1,8 @@
 #pragma once
+#include "Map/Map.h"
+#include "Player.h"
+
+//class NODE;
 
 class CMyGame : public CGame
 {
@@ -33,4 +37,8 @@ public:
 	virtual void OnRButtonUp(Uint16 x,Uint16 y);
 	virtual void OnMButtonDown(Uint16 x,Uint16 y);
 	virtual void OnMButtonUp(Uint16 x,Uint16 y);
+ 
+	
+	Map mainMap;
+	Player player;
 };

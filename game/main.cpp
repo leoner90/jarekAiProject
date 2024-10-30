@@ -7,9 +7,9 @@ CGameApp app;
 int main(int argc, char* argv[])
 {
 	//app.DebugMemoryLeaks();
-	app.OpenWindow(800, 600, "Cheddar Heist!");
+	app.OpenWindow(1024, 768, "Cheddar Heist!");
 	//app.OpenFullScreen(800, 600, 24);
-	//app.OpenConsole();
+	app.OpenConsole();
 	app.SetClearColor(CColor::White());
 	app.Run(&game);
 	return(0);

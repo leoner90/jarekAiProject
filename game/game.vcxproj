@@ -177,6 +177,8 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="source\PathFinder.cpp" />
+    <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Map\Map.cpp" />
     <ClCompile Include="source\MyGame.cpp" />
     <ClCompile Include="source\stdafx.cpp">
@@ -194,6 +196,8 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
   <ItemGroup>
     <ClInclude Include="headers\Map\Map.h" />
     <ClInclude Include="headers\MyGame.h" />
+    <ClInclude Include="headers\PathFinder.h" />
+    <ClInclude Include="headers\player.h" />
     <ClInclude Include="source\stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
