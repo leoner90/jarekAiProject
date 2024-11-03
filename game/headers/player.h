@@ -23,7 +23,6 @@ public:
 	void buffResets(float time);
 	void mpRegen(float time);
 	CSprite* playerSprite;
- 
 	bool IsCheeseObtained;
  
 	bool IsDead;
@@ -37,7 +36,7 @@ public:
 	bool isPlayerHidden;
 	float hideBuffTimer;
 
-	float attackDelayTimer;
+
 	bool isAttacking;
 
 private:
@@ -61,5 +60,18 @@ private:
 
 	Map& map;
 
+
+	//bufs flags
+	std::vector<bool> buffFlags;
+	std::vector<float> buffReaminingTime;
+
+	CSoundPlayer  lightOff;
+	CSoundPlayer  obtainCheese;
+	CSoundPlayer  hideSkill;
+	CSoundPlayer  speedSkill;
+	CSoundPlayer  attackSkill;
+	CSoundPlayer  hurtSound;
+	
+ 
 };
  

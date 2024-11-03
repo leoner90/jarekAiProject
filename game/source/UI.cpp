@@ -26,6 +26,24 @@ UI::UI()
 	underLayerSprite.SetImage("underLayer.png");
 	underLayerSprite.SetSize(1024, 120);
 	underLayerSprite.SetPosition(512, 60);
+
+	//bufs
+
+	hideBuffIcon.LoadImage("hiddenBuff.png");
+	hideBuffIcon.SetImage("hiddenBuff.png");
+	hideBuffIcon.SetSize(45, 45);
+	hideBuffIcon.SetPosition(90, 120);
+
+	speedbuffIcon.LoadImage("speedUpBuff.png");
+	speedbuffIcon.SetImage("speedUpBuff.png");
+	speedbuffIcon.SetSize(45, 45);
+	speedbuffIcon.SetPosition(145, 120);
+
+	cheeseObtainedIcon.LoadImage("Cheese.png");
+	cheeseObtainedIcon.SetImage("Cheese.png");
+
+	cheeseObtainedIcon.SetSize(30, 25);
+	cheeseObtainedIcon.SetPosition(960, 98);
 }
 
 
@@ -47,11 +65,29 @@ void UI::SetMpBar(float remainingMpPerc)
 	mpBarSprite.SetPos(950, currentSize / 2);
 }
 
-void UI::DrawUI(CGraphics* g)
+void UI::DrawUI(CGraphics* g, std::vector<bool> buffs, std::vector<float> buffRemainingTime)
 {
 	underLayerSprite.Draw(g);
 	hpBarSprite.Draw(g);
 	mpBarSprite.Draw(g);
 	actionBarSprite.Draw(g);
-	endTurnBtn.Draw(g);
+
+
+	//buffs
+	
+	if (buffs[0])
+	{
+		float buffTime = -buffRemainingTime[0] > 0 ? -buffRemainingTime[0] : 0;// in case if light is off
+
+		hideBuffIcon.Draw(g);
+		if(buffTime) 
+			*g << font("AFontPTSerif.ttf", 12) << color(CColor::White()) << xy(75, 85) << buffTime;
+	}
+	if (buffs[1])
+	{
+		speedbuffIcon.Draw(g);
+		*g << font("AFontPTSerif.ttf", 12) << color(CColor::White()) << xy(130, 85) << -buffRemainingTime[1];
+	}
+
+	if (buffs[2]) cheeseObtainedIcon.Draw(g);
 }

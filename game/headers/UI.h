@@ -7,15 +7,20 @@ public:
 	//update Bars
 	void SetHpBar(float remainingHpPerc);
 	void SetMpBar(float remainingHpPerc);
-	void DrawUI(CGraphics* g);
+	void DrawUI(CGraphics* g, std::vector<bool> buffs, std::vector<float> buffRemainingTime);
 private:
 
 private:
+	//action bar
 	CSprite underLayerSprite;
 	CSprite actionBarSprite;
 	CSprite hpBarSprite;
 	CSprite mpBarSprite;
-	CSprite endTurnBtn;
+
+	//BUFFS
+	CSprite speedbuffIcon;
+	CSprite hideBuffIcon;
+	CSprite cheeseObtainedIcon;
 };
 
  

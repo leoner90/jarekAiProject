@@ -67,5 +67,10 @@ public:
 	CSprite* dogSpritePrefab;
 	CSprite* humanSpritePrefab;
 
+	//sounds
+	CSoundPlayer  mainBgMusic;
+	bool isMainMusicPlayong; // native Functions dosrn't work at all
+	CSoundPlayer  loseSound;
+	CSoundPlayer  winSound;
  
 };

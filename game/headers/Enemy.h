@@ -1,11 +1,12 @@
 #pragma once
 #include "PathFinder.h"
 #include "DecisionMaker.h"
+#include "Dialogbox.h"
 
 class Map;
 class Player;
 
-class Enemy : public PathFinder, public DecisionMaker
+class Enemy : public PathFinder, public DecisionMaker, public Dialogbox
 {
 public:
 
@@ -17,12 +18,12 @@ public:
 	void Draw(CGraphics* g);
 	void Update(float time);
 	void Patroling(float time);
-	void Chassing();
+	void Chassing(float gametime);
 	void Attack(float time);
 	void GettingDamage(float DamageAmount);
 	void EnemyInterface();
 	void Animation();
-	void callForAlert();
+	void callForAlert(float gameTime);
 	void DogAlert(float gameTime);
 	void AISwitchLightOn(float gameTime);
 	bool dogAlarma;
@@ -66,5 +67,7 @@ private:
 	Map& map;
 
 	
-	
+	CSoundPlayer  lightOn;
+	CSoundPlayer attakSound;
+	CSoundPlayer deadSound;
 };

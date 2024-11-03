@@ -18,6 +18,7 @@ CMyGame::CMyGame(void) : mainMap(), player(mainMap)
 	humanSpritePrefab = new CSprite();
 	humanSpritePrefab->AddImage("human.png", "Walk", 2, 3, 0, 2, 0, 0, CColor::Blue());
 	humanSpritePrefab->AddImage("human.png", "Idle", 2, 3, 0, 2, 0, 0, CColor::Blue());
+	
 }
 
 CMyGame::~CMyGame(void)
@@ -30,7 +31,12 @@ void CMyGame::OnUpdate()
 {
 	if (IsMenuMode() || IsPaused() || gameOver) return;
 	Uint32 t = GetTime();
-	for (auto AIplayer : AllEnemies)   AIplayer->Update(t);
+	for (auto AIplayer : AllEnemies) 
+	{
+		AIplayer->Update(t);
+		if (AIplayer->IsDead) 
+			AllEnemies.erase(find(AllEnemies.begin(), AllEnemies.end(), AIplayer));
+	}
 	player.Update(t, AllEnemies);
 
 	if (player.IsDead || player.isGameWon)
@@ -50,16 +56,14 @@ void CMyGame::OnDraw(CGraphics* g)
 	}
 	else if (IsMenuMode() || IsPaused())
 		menuHandler(g);
+	
+		
 	else 
 	{
 		mainMap.Draw(g, player.playerSprite->GetPosition());
 		for (auto AIplayer : AllEnemies)   AIplayer->Draw(g);
 		player.Draw(g);
 	}
-
-
-
-
 }
 
 
@@ -73,7 +77,8 @@ void CMyGame::OnInitialize()
 	currentMenuState = MENU;
 	startScreenSelection = NEWGAME;
 	mainMap.globalLight = true;
-
+	mainBgMusic.Play("mainBgMusic.wav", -1);
+	isMainMusicPlayong = true;
 }
 
 /***********  TO CLEAN ***********/
@@ -98,6 +103,13 @@ void CMyGame::OnStartLevel(Sint16 nLevel)
 
 void CMyGame::OnGameOver()
 {
+	mainBgMusic.Stop();
+	isMainMusicPlayong = false;
+	if (player.IsDead)
+		loseSound.Play("gameOver.wav", 1);
+	else
+		winSound.Play("win.wav", 1);;
+
 	deadScreenTimer =  2500;
 	gameOver = true;
 	gameStarted = false;
@@ -255,8 +267,13 @@ void CMyGame::initSpritesHandler()
 
 void CMyGame::menuHandler(CGraphics* g)
 {
- 
-
+	//music reset - yeah the best place to do it!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ( for game reset mostly)
+	if (!isMainMusicPlayong)
+	{
+		mainBgMusic.Play("mainBgMusic.wav", -1);
+		isMainMusicPlayong = true;
+	}
+		
 	startScreen.Draw(g);
 	//CONTROLS PAGE
 	if (showControllImg)

@@ -8,6 +8,11 @@ Player::Player(Map& map) : PathFinder(map), map(map)
 	mainGoalCheese.LoadImage("Cheese.png");
 	mainGoalCheese.SetImage("Cheese.png");
 	mainGoalCheese.SetSize(50, 50);
+
+
+
+
+	//player
 	playerSprite = new CSprite;
 	playerSprite->AddImage("player.png", "Walk", 7, 4, 3, 1, 3, 0, CColor::Blue());
 	playerSprite->AddImage("player.png", "Idle",  7, 4, 0, 3, 3, 1, CColor::Blue());
@@ -63,10 +68,18 @@ void Player::Update(float time, std::vector<Enemy*>& enemiesRef)
 	Animation();
 	playerSprite->Update(time);
 
-	if (mainGoalCheese.HitTest(playerSprite))
+	if (mainGoalCheese.HitTest(playerSprite) && !IsCheeseObtained)
+	{
+		obtainCheese.Play("obtainCheese.wav", 1);
 		IsCheeseObtained = true;
+	}
+		
 	if (IsCheeseObtained && playerSprite->GetX() > 0 && playerSprite->GetX() < 400 && playerSprite->GetY() > 0 && playerSprite->GetY() < 150)
 		isGameWon = true;
+
+
+	buffFlags = { isPlayerHidden, isPlayerHasted, IsCheeseObtained };
+	buffReaminingTime = { time - hideBuffTimer, time - speedBuffTimer };
 }
 
 void Player::Draw(CGraphics* g)
@@ -81,7 +94,11 @@ void Player::Draw(CGraphics* g)
 	if(!IsCheeseObtained)
 		mainGoalCheese.Draw(g);
 	g->SetScrollPos(0, 0);
-	UI::DrawUI(g);
+
+
+
+ 
+	UI::DrawUI(g, buffFlags, buffReaminingTime);
 	g->SetScrollPos(SaveOfset);
 }
 
@@ -138,18 +155,25 @@ void Player::Animation()
 
 void Player::Attack(float time)
 {
+	isAttacking = false;
 	//attack electricalPanel
-	if (playerSprite->GetX() > 1840 && playerSprite->GetY() < 150)
+	if (playerSprite->GetX() > 1840 && playerSprite->GetY() < 150 && map.globalLight)
 	{
+		lightOff.Play("lightOff.wav", 1);
 		isPlayerHidden = true;
 		map.globalLight = false;
 	}
 		
+	std::cout << "Enemy count: " << AllEnemies.size() << std::endl;
+	for (auto enemy : AllEnemies)
+	{
+		cout << "da" << endl;
+	}
 	//all enemies on front + distance less then 80 getting damage
 	for (auto enemy : AllEnemies)
 	{
-
-		if (Distance(enemy->enemySprite->GetPos(), playerSprite->GetPos()) > 80) return;
+		if (Distance(enemy->enemySprite->GetPos(), playerSprite->GetPos()) > 60) 
+			continue;
 
 		//is enemy on fron of player sprite, depends on sprite rotation
 		float playerRotation = playerSprite->GetRotation() * (M_PI / 180.0f); // to radians
@@ -159,7 +183,7 @@ void Player::Attack(float time)
 		float dotProduct = Dot(playerForward, directionToEnemy.Normalize());
 
 		cout << dotProduct;
-		bool isPlayerFacingEnemy = dotProduct >= -1.f; 
+		bool isPlayerFacingEnemy = true;// dotProduct >= -1.f; 
 
 		//if facing each other and distance < 50
 		if (isPlayerFacingEnemy)
@@ -169,6 +193,7 @@ void Player::Attack(float time)
 
 void Player::GettingDamage(float DamageAmount)
 {
+	hurtSound.Play("hurtSound.wav", 1);
 	currentHp -= DamageAmount;
 	if (currentHp <= 0)
 	{
@@ -181,11 +206,15 @@ void Player::GettingDamage(float DamageAmount)
 
 void Player::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode, float time)
 {
-	if (sym == SDLK_q && currentMp >= 10 && !isAttacking)
+	;
+	;
+	;
+	if (sym == SDLK_q && currentMp >= 10 && !isAttacking && attackDellayTimer < time)
 	{
 		currentMp -= 10;
-		attackDelayTimer = time + 1000;
+		attackDellayTimer = time + 1000;
 		isAttacking = true;
+		attackSkill.Play("playerAttack.wav", 1);
 	}
 
 	if (sym == SDLK_w && currentMp >= 20 && !isPlayerHidden)
@@ -193,6 +222,7 @@ void Player::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode, float time)
 		currentMp -= 50;
 		hideBuffTimer = time + 2000;
 		isPlayerHidden = true;
+		hideSkill.Play("vanish.wav", 1);
 	}
 
 	if (sym == SDLK_e && currentMp >= 20 && !isPlayerHasted)
@@ -200,6 +230,7 @@ void Player::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode, float time)
 		currentMp -= 25;
 		speedBuffTimer = time + 2000;
 		isPlayerHasted = true;
+		speedSkill.Play("speedSkill.wav", 1);
 	}	
 }
 
@@ -228,6 +259,7 @@ void Player::mpRegen(float time)
 	}
 }
 
+ 
  
 void Player::OnRButtonDown(Uint16 x, Uint16 y)
 {
