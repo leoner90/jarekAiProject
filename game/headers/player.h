@@ -1,23 +1,65 @@
 #pragma once
 #include "PathFinder.h"
-class Map;
+#include "UI.h"
 
-class Player  
+class Map;
+class Enemy;
+class Player  : public PathFinder, public UI
 {
 public:
 	
 	Player(Map& map);
 	~Player();
+	void gameInit();
 	void Draw(CGraphics* g);
-	void Update(float time);
-	void MoveToWaypoint(float time);
+	void Update(float time, std::vector<Enemy*>& enemiesRef);
+	
+	void OnRButtonDown(Uint16 x, Uint16 y);
+	void MoveToWaypoint();
 	void Animation();
-	void OnLButtonDown(Uint16 x, Uint16 y);
+	void Attack(float time);
+	void GettingDamage(float DamageAmount);
+	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode, float time);
+	void buffResets(float time);
+	void mpRegen(float time);
 	CSprite* playerSprite;
-	int newState;
-	PathFinder pathFinder;
-	enum playerStatus { WALK_RIGHT , WALK_LEFT, WALK_UP, WALK_DOWN, IDLE};
-private:
  
+	bool IsCheeseObtained;
+ 
+	bool IsDead;
+	bool isGameWon;
+
+	CSprite mainGoalCheese;
+	float playerSpeedOrigin;
+	bool isPlayerHasted;
+	float speedBuffTimer;
+
+	bool isPlayerHidden;
+	float hideBuffTimer;
+
+	float attackDelayTimer;
+	bool isAttacking;
+
+private:
+	int newState;
+	std::vector <CVector> currentWaypoint;
+	int lastState;
+	enum playerStates {IDLE, WALK};
+
+
+	float currentHp, maxHp;
+	float currentMp, maxMp;
+	float damage;
+	float attackDellayTimer;
+
+
+	std::vector<Enemy*> AllEnemies;
+
+	//delta Time
+	float previousTime = 0.0f;
+	float deltaTime;
+
+	Map& map;
+
 };
  

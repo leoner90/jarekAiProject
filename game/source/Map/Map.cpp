@@ -26,11 +26,18 @@ struct ObjCoord
 
 Map::Map()
 {
+	globalLight = true;
 	gameBg.LoadImage("mainMapbg.jpg");
 	gameBg.SetImage("mainMapbg.jpg");
 	gameBg.SetSize(2000, 2000);
 	gameBg.SetPosition(1000, 1000);
 
+	gameBgNoLight.LoadImage("mainMapbgNoLight.jpg");
+	gameBgNoLight.SetImage("mainMapbgNoLight.jpg");
+	gameBgNoLight.SetSize(2000, 2000);
+	gameBgNoLight.SetPosition(1000, 1000);
+
+	
  
 
 	ObjCoord allObj[] =
@@ -73,50 +80,49 @@ Map::Map()
 Map::~Map()
 {
 }
-int x = 0;
-int y = 0;
+
 void Map::Draw(CGraphics* g, CVector playerPos)
 {
- 
-
 	//map Scrolling
 	if (playerPos.GetX() < leftScreenLimit)
 	{
 		scrollOffset = 0;
-		g->SetScrollPos(0, 0);
+		g->SetScrollPos(0, 130);
 	}
-
 
 	else if (playerPos.GetX() >= leftScreenLimit && playerPos.GetX() <= rightScreenLimit)
 	{
 		scrollOffset = leftScreenLimit - playerPos.GetX();
-		g->SetScrollPos(leftScreenLimit - playerPos.GetX(), 0);
+		g->SetScrollPos(leftScreenLimit - playerPos.GetX(), 130);
 	}
 	else if (playerPos.GetX() > rightScreenLimit - leftScreenLimit - 800)
 	{
 		scrollOffset = leftScreenLimit - rightScreenLimit;
-		g->SetScrollPos(leftScreenLimit - rightScreenLimit, 0);
+		g->SetScrollPos(leftScreenLimit - rightScreenLimit, 130);
 	}
 
 	if (playerPos.GetY() < bottomScrollLimit)
 	{
 		scrollOffset = 0;
-		g->SetScrollPos(g->GetScrollPos().X(), 0);
+		g->SetScrollPos(g->GetScrollPos().X(), 130);
 	}
 	else if (playerPos.GetY() >= bottomScrollLimit && playerPos.GetY() <= topScrollLimit)
 	{
 		scrollOffset = bottomScrollLimit - playerPos.GetY();
-		g->SetScrollPos(g->GetScrollPos().X(), bottomScrollLimit - playerPos.GetY());
+		g->SetScrollPos(g->GetScrollPos().X(), bottomScrollLimit - playerPos.GetY() + 130);
 	 
 	}
 	else if (playerPos.GetY() > topScrollLimit - bottomScrollLimit - 800)
 	{
 		scrollOffset = bottomScrollLimit - topScrollLimit;
-		g->SetScrollPos(g->GetScrollPos().X(), bottomScrollLimit - topScrollLimit);
+		g->SetScrollPos(g->GetScrollPos().X(), bottomScrollLimit - topScrollLimit + 130);
 	}
 
 	currentScrollOffset = g->GetScrollPos();
-	gameBg.Draw(g);
+	if(globalLight)
+		gameBg.Draw(g);
+	else
+		gameBgNoLight.Draw(g);
 	//for (auto obj : checkObects) obj->Draw(g);
 	
 }

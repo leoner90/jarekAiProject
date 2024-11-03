@@ -1,17 +1,20 @@
 #pragma once
 #include "Map/Map.h"
 #include "Player.h"
+#include "Enemy.h"
 
-//class NODE;
 
 class CMyGame : public CGame
 {
-	// Define sprites and other instance variables here
-	CSprite m_sprite;	// Sample sprite
+	Map mainMap;
+	Player player;
+ 
 
 public:
 	CMyGame(void);
 	~CMyGame(void);
+
+	void EnemyCreator();
 
 	// Per-Frame Callback Funtions (must be implemented!)
 	virtual void OnUpdate();
@@ -32,13 +35,37 @@ public:
 	// Mouse Events Handlers
 	virtual void OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,bool bRight,bool bMiddle);
 	virtual void OnLButtonDown(Uint16 x,Uint16 y);
-	virtual void OnLButtonUp(Uint16 x,Uint16 y);
 	virtual void OnRButtonDown(Uint16 x,Uint16 y);
 	virtual void OnRButtonUp(Uint16 x,Uint16 y);
-	virtual void OnMButtonDown(Uint16 x,Uint16 y);
-	virtual void OnMButtonUp(Uint16 x,Uint16 y);
  
+	void menuHandler(CGraphics* g);
+	void initSpritesHandler();
+	CSprite startScreen;
+	CSprite mainMenuSelectionLogo;
 	
-	Map mainMap;
-	Player player;
+
+	bool gameStarted;
+	bool IsGameWon;
+	bool showControllImg;
+
+	//game Over
+	bool gameOver;
+	float deadScreenTimer;
+	CSprite gameOverBg;
+	CSprite gameWinBg;
+
+	int currentMenuState;
+	enum gameStates {MENU, PAUSE, INGAME};
+
+	int startScreenSelection;
+	enum menuScreenSelection { CONTINUE, NEWGAME, CONTROLS, EXIT, BACK };
+	vector<Enemy*> AllEnemies;
+
+
+	//prefabs  
+	CSprite* catSpritePrefab;
+	CSprite* dogSpritePrefab;
+	CSprite* humanSpritePrefab;
+
+ 
 };

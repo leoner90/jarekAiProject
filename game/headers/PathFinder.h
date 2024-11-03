@@ -1,27 +1,44 @@
 #pragma once
-class Player;
+#include "Intersection.h"
+
 class Map;
 class NODE;
 
-class PathFinder
+class PathFinder : public Intersection
 {
 public:
-	PathFinder(Player& p, Map& m);
+	PathFinder(Map& m);
 	~PathFinder();
-	bool PathFind(vector<NODE>& graph, int nStart, int nGoal, vector<int>& path);
-	void PathSmoothing();
+	bool PathFind( int nStart, int nGoal, vector<int>& path);
 	bool IsPlaceAllowed(CVector mousePos);
-	void Move(Uint16 x, Uint16 y);
+
+	std::vector <CVector>  PathSmoothing(std::vector <CVector> currentWaypoints, CSprite& entity);
+	std::vector <CVector> Move(Uint16 x, Uint16 y, CVector entityPos, bool mapOfscroll);
+
+	//AI
+	std::vector <CVector> GenerateAiPatrolPoints(CVector currentAiPos);
+
+	CSpriteList testNodes;//to delete just for testing
+private:
 	vector<NODE> m_graph;
 	std::vector <CVector> m_waypoints;
-
-
-	CSpriteList testNodes;
-
-
-	Player& player;
 	Map& map;
-private:
-	
+};
+
+//CONNECTIONS
+struct CONNECTION
+{
+	int nEnd; // index of the destination node
+	float cost; // cost of the transition
+};
+
+//NODES
+struct NODE
+{
+	CVector pos; // 2D position of the node
+	list<CONNECTION> conlist; // list of connections
+	float costSoFar;
+	int nConnection;
+	bool open;
 };
  

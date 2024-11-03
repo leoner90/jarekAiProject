@@ -177,6 +177,10 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="source\DecisionMaker.cpp" />
+    <ClCompile Include="source\Dialogbox.cpp" />
+    <ClCompile Include="source\Enemy.cpp" />
+    <ClCompile Include="source\Intersection.cpp" />
     <ClCompile Include="source\PathFinder.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Map\Map.cpp" />
@@ -187,6 +191,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="source\UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="gfc\gfc.vcxproj">
@@ -194,10 +199,15 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="headers\DecisionMaker.h" />
+    <ClInclude Include="headers\Dialogbox.h" />
+    <ClInclude Include="headers\Enemy.h" />
+    <ClInclude Include="headers\Intersection.h" />
     <ClInclude Include="headers\Map\Map.h" />
     <ClInclude Include="headers\MyGame.h" />
     <ClInclude Include="headers\PathFinder.h" />
     <ClInclude Include="headers\player.h" />
+    <ClInclude Include="headers\UI.h" />
     <ClInclude Include="source\stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
